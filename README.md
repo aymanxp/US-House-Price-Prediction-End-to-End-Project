@@ -13,9 +13,9 @@ This project aims to build a **full end-to-end machine learning pipeline** that:
 
 --- 
 
-## 🔎 Part 1 – Data Extraction
+##  Part 1 – Data Extraction
 
-For the data source, I scraped property listings from [📌 Example Website](https://www.realestate.com.au/international/us/)
+For the data source, I scraped property listings from [realestate.com](https://www.realestate.com.au/international/us/)
 
 ### ⚙️ Tools & Libraries
 - **[crawl4ai](https://github.com/unclecode/crawl4ai)** – to crawl pages programmatically.  
@@ -23,7 +23,7 @@ For the data source, I scraped property listings from [📌 Example Website](htt
 
 ### 📝 Workflow
 1. **Crawl pages** from the real estate website using `crawl4ai`, look for House Details Cards and save them to [file](data_extraction_and_cleaning/urls.txt). (Check code [here](data_extraction_and_cleaning/get_prooperty_cards.py))  
-2. **Crawl House Details**  
+2. **Crawl House Details Cards** (Check code [here](data_extraction_and_cleaning/scrape_property_cards.py))  
 3. **Parse HTML** with `BeautifulSoup` to extract details such as:  
    - Price  
    - Land Size  
@@ -72,7 +72,20 @@ async def main():
 
 asyncio.run(main())
 ```
-Because crawling multiple pages at once is I/O boud, i used the ***arun_many()*** functionthat leverage asynchronous I/O parallelism
+Because crawling multiple pages at once is I/O boud, i used the ***arun_many()*** function that leverage asynchronous I/O parallelism for faster crawling
 
 ## Example of the extracted data : 
 ![DATA EXAMPLE](images/extracted_data.png)
+
+##  Part 2 – Data Cleaning
+
+### ⚙️ Tools & Libraries
+- **[pandas](https://pandas.pydata.org/)** – for data cleaning, transformation, and feature preparation. 
+
+### 📝 Cleaning steps (Check code [here](data_extraction_and_cleaning/data_cleaning.ipynb))
+1. ***Remove missing values*** – Dropped incomplete rows where essential details (like price, location or Building size) were missing.
+2. ***Convert data types*** – Converted Price, Land Size and Building Size features to numerical format (int/float) and room counts to integers.
+3. Export cleaned dataset into a new [CSV](data_extraction_and_cleaning/cleaned_dataset.csv).
+
+![Cleaned Dataset](images/cleaned_data.png)
+
